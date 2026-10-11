@@ -1,0 +1,11 @@
+{
+    "botName": "Waguri",
+    "serverName": "the server",
+    "color": "#6fa8dc",
+    "errorColor": "#e06666",
+    "currency": "¥",
+    "helpTitle": "🍵 Help",
+    "helpIntro": "Hi, I'm **Waguri**. Pick a category below to see what I can do.",
+    "welcomeImages": [],
+    "showLevelBotCommands": true
+}

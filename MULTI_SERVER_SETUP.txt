@@ -1,0 +1,128 @@
+SETTING UP THE BOT
+==================
+
+Everything server-specific (channels, roles, prefix) is set per server with
+.setup, so the same bot can run in as many servers as you like. The DISBOARD
+bot ID in the code is just there to spot DISBOARD's bump messages, it has
+nothing to do with your server.
+
+Test it in a private server first, especially the moderation and security
+stuff, before you rely on it anywhere real.
+
+Getting it running
+------------------
+1. Install Node.js 22.12.0 or newer, then in the bot's folder run:
+
+       npm install
+
+2. In the Discord Developer Portal, open your app -> Bot and turn on the
+   Server Members Intent and the Message Content Intent. Prefix commands and
+   member events don't work without them.
+3. Copy .env.example to .env and put your bot token in DISCORD_TOKEN.
+   (Or copy config.example.json to config.json and put the token there.)
+   Never share either file.
+4. Invite the bot with the "bot" and "applications.commands" scopes and the
+   permissions for whatever features you want (moderation, roles, voice...).
+   Drag the bot's role above any roles it has to hand out.
+5. Start it:
+
+       npm start
+
+6. In each server, the owner or an admin runs .setup to pick channels and
+   roles, for example:
+
+       .setup welcome #welcome
+       .setup modlog #mod-log
+       .setup adminrole @Admin
+       .setup modrole @Moderator
+
+   Run .setup on its own to see everything, and .setup <name> off to clear
+   one. Anything you don't set up stays off. The bot needs View Channel,
+   Send Messages and Embed Links in the channels you give it. Anyone with a
+   role above the mod/admin role counts as staff/admin too.
+
+All the .setup options
+----------------------
+Saved per server in data/setup.json.
+
+  .setup welcome #channel           welcome messages
+  .setup birthday #channel          birthday announcements
+  .setup birthdayrole @role         role given on someone's birthday
+  .setup modlog #channel            moderation actions
+  .setup joinlog #channel           joins and leaves
+  .setup caselog #channel           numbered mod cases
+  .setup messagelog #channel        edited and deleted messages
+  .setup alerts #channel            raid, spam and anti-nuke alerts
+  .setup securitytest #channel      where the security self-test runs
+  .setup jail #channel              jail channel
+  .setup jailrole @role             jail role
+  .setup bump #channel              DISBOARD bump reminders
+  .setup streaks #channel           daily chat streak announcements
+  .setup starboard #channel         starboard (.starboard threshold <n>, default 3)
+  .setup updates #channel           bot update posts
+  .setup adminrole @role            admin role
+  .setup modrole @role              mod role
+  .setup coowner add/remove @user   co-owners (server owner only)
+  .setup ownerrole @role            role with owner powers (server owner only)
+
+The bot tells you if it can't post in a channel or give out a role you
+picked. The prefix is "." by default, change it with .prefix <new-prefix>.
+
+What's per server and what isn't
+--------------------------------
+Economy, reminders, custom commands, scheduled announcements, levels, cases,
+streaks and birthdays are all kept separate for each server. .reminders only
+shows reminders from the server you're in.
+
+Timezones and Last.fm links belong to the person, so they follow them
+everywhere.
+
+Birthdays only ever show the day and month. The bot deletes the
+.setbirthday message afterwards so the year isn't left in chat (if it
+can't, it asks the person to delete it). Old birthdays saved before they
+were per server get moved to the guildId in config.json, or the only server
+with birthdays set up. If it can't tell which server, it leaves them alone
+and logs a warning.
+
+Slash commands
+--------------
+deploy-commands.js uses clientId, guildId and token from config.json. To add
+the slash commands to your test server:
+
+       node deploy-commands.js
+
+To add them everywhere the bot is:
+
+       node deploy-commands.js --global
+
+Global ones can take a while to show up. Either way it replaces whatever
+commands were there before.
+
+Theme
+-----
+theme.json sets the bot's name, colours, footer, currency, help text and
+welcome images. It's one theme for the whole bot, not per server, and you
+need to restart after changing it. serverName is only used outside a server;
+inside one, the bot uses the server's real name.
+
+Hosting
+-------
+pm2 keeps it running and restarts it if it crashes:
+
+       pm2 start index.js --name waguri
+
+Keep the data/ folder somewhere that doesn't get wiped and back it up, that's
+where all the settings and everyone's stuff lives.
+
+Extras
+------
+Last.fm, remove.bg, chat and the web dashboard all have optional settings in
+.env.example, only fill in the ones you want. Don't put the dashboard on the
+internet without setting up its logins first.
+
+Checks
+------
+       npm run check
+       npm test
+
+These only check the code, they don't log in to Discord.

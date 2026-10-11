@@ -1,0 +1,39 @@
+{
+  "name": "custom-discord-bot",
+  "version": "1.0.0",
+  "description": "A customisable Discord bot: music, moderation, economy, casino and games, themed with theme.json",
+  "license": "ISC",
+  "author": "Cooper",
+  "type": "commonjs",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "check": "node scripts/check.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.10.0",
+    "@distube/direct-link": "^1.0.1",
+    "@distube/file": "^1.0.1",
+    "@distube/yt-dlp": "^2.0.1",
+    "@napi-rs/canvas": "^1.0.9",
+    "axios": "^1.12.2",
+    "discord.js": "^14.27.0",
+    "distube": "^5.2.3",
+    "dotenv": "^18.0.3",
+    "ffmpeg-static": "^5.3.0"
+  },
+  "overrides": {
+    "@discordjs/node-pre-gyp": {
+      "tar": "^7.5.22"
+    }
+  },
+  "allowScripts": {
+    "ffmpeg-static@5.3.0": true,
+    "@distube/yt-dlp@2.0.1": true,
+    "@discordjs/opus@0.10.0": true
+  }
+}
